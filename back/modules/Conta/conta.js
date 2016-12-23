@@ -15,7 +15,7 @@ conta.use(validator);
 // Insere Conta
 conta.put("/", function(req, res) {
 
-	req.body.saldo = 0;
+	req.body.saldo = 2000;
 
 	model.create(req.body)
 	.then((response) => {

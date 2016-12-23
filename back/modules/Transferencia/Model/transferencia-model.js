@@ -1,14 +1,14 @@
 let Sequelize = require("sequelize");
 let sequelize = require("../../../lib/db");
 
-let Conta = sequelize.define("conta", {
+let Transferencia = sequelize.define("transferencia", {
 	id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
-	agencia: { type: Sequelize.STRING, allowNull: false, unique: "uniqueConta"},
-	conta: { type: Sequelize.STRING, allowNull: false, unique: "uniqueConta"},
-	saldo: { type: Sequelize.STRING, allowNull: false, unique: "uniqueConta"},
+	remetente: { type: Sequelize.STRING, allowNull: false},
+	destinatario: { type: Sequelize.STRING, allowNull: false},
+	valor: { type: Sequelize.DECIMAL(15,2), allowNull: false},
 });
 
-Conta.sync().then(() => {
+Transferencia.sync().then(() => {
 });
 
-module.exports = Conta;
+module.exports = Transferencia;

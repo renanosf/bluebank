@@ -33,4 +33,19 @@ export class LoginComponent implements OnInit  {
 			alert("Preencha os campos");
 		}
 	}
+
+	criarConta() {
+		console.log(this.contaNova);
+		if (this.contaNova.agencia && this.contaNova.conta) {
+			this.contaService.criarConta(this.contaNova)
+			.then((res) => {
+				alert("Conta criada com sucesso. Use o formulário ao lado para acesso");
+			})
+			.catch(() => {
+				alert("Não foi possível criar essa conta");
+			})
+		} else {
+			alert("Preencha os campos");
+		}
+	}
 }

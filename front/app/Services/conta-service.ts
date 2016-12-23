@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { Router } from "@angular/router";
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class ContaService {
+export class ContaService implements OnInit {
 
 	private url = 'conta';
 	private headers = new Headers({'Content-Type': 'application/json'});
@@ -16,6 +16,14 @@ export class ContaService {
 	}
 
 	constructor(private http: Http, private router: Router) { }
+
+	ngOnInit() {
+		if (this.contaInfo && this.router.url === '/login') {
+			this.router.navigateByUrl('/painel');
+		} else if (!this.contaInfo && this.router.url === '/painel') {
+			this.router.navigateByUrl('/login');
+		}
+	}
 
 	logout() {
 		localStorage.clear();

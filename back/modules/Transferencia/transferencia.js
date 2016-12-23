@@ -1,42 +1,57 @@
 let express = require("express");
 /* eslint-disable */
-let conta = express.Router();
+let transferencia = express.Router();
 /* eslint-enable */
 
-let model = require("./Model/conta-model");
+let model = require("./Model/transferencia-model");
+let conta = require("./../Conta/Model/conta-model");
 let errorHandling = require("../../lib/errorHandling");
 let required = require("./Required/required");
 let validator = require("../../lib/validator")(required);
 
 // Validador de Campos
-conta.use(validator);
+transferencia.use(validator);
 
-// Insere Conta
-conta.put("/", function(req, res) {
+// Insere transferencia
+transferencia.put("/", function(req, res) {
 
-	req.body.saldo = 0;
+	let rem = null;
+	let des = null;
+	let valor = parseFloat(req.body.valor);
 
-	model.create(req.body)
+	conta.findOne({where: {id: req.body.remetente}})
+	.then((response) => {
+		console.log(response.dataValues);
+		if (response.dataValues.saldo < valor) {
+			throw new Error("Saldo Insuficiente")
+		} else {
+			rem = response;
+			return conta.findOne({where : {id: req.body.destinatario}});
+		}
+	})
+	.then((response) => {
+		des = response;
+		return rem.decrement({saldo : valor});
+	})
+	.then(() => {
+		console.log("Decrementou");
+		return des.increment({saldo : valor});
+	})
+	.then(() => {
+		return model.create({
+			remetente: req.body.remetente,
+			destinatario: req.body.destinatario,
+			valor: valor
+		});
+	})
 	.then((response) => {
 		res.status(201).json({id: response.dataValues.id});
 	})
 	.catch((err) => {
-		res.status(errorHandling.getStatus(err.errors)).json({err: errorHandling.getText(err.errors)});
-	});
-});
-
-// Busca Conta
-conta.post("/entraConta", function(req, res) {
-
-	model.findOne({where: req.body})
-	.then((response) => {
-		console.log(response);
-		res.status(200).json(response.dataValues);
-	})
-	.catch((err) => {
 		console.log(err);
-		res.status(404).json({err: "Não encontrado"});
+		res.status(409).json({err : "Não foi possivel concluir essa transacao"});
 	});
+
 });
 
-module.exports = conta;
+module.exports = transferencia;

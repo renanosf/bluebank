@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="row">
+		<!-- Acessar Conta -->
+		<div class="col-md-4 col-md-offset-1">
+			<div class="jumbotron centered">
+				<h2>Acessar Conta</h2>
+					<div class="form-group">
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Agencia" [(ngModel)]="contaAcesso.agencia">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Conta" [(ngModel)]="contaAcesso.conta">
+					</div>
+					<div class="form-group">
+						<input type="button" class="btn btn-primary btn-full" value="Acessar" (click)="acessarConta()">
+					</div>
+			</div>
+		</div>
+		<!-- Criar Conta -->
+		<div class="col-md-4 col-md-offset-1">
+			<div class="jumbotron centered">
+				<h2>Criar Conta</h2>
+				<form>
+					<div class="form-group">
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Agencia">
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Conta">
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-primary btn-full" value="Criar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

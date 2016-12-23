@@ -12,4 +12,12 @@ app.use(bodyParser.json({limit: "102400kb"}));
 // Carrega Modulos do sistema
 app.use("/conta", conta);
 
+//Arquivos estaticos do front
+app.use(express.static('../front'));
+
+//404 - Redirecionar para home
+app.use((req,res) => {
+	res.redirect("/");
+})
+
 app.listen(5000);
